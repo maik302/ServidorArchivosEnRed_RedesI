@@ -1,3 +1,4 @@
+import java.io.File;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
@@ -13,6 +14,7 @@ public class servidor_a_rmifs {
       //por la lejania del servidor la operacion tarda considerablemente.
       //Naming.rebind("rmi://irulan.ldc.usb.ve:21000/a_rmifs_interfazService", a_usuario);
       Naming.rebind("rmi://localhost:21000/a_rmifs_interfazService", a_usuario);
+      a_usuario.suscribir_usuarios(new File("usuarios.txt"));
     }
     catch (Exception e) {
       System.out.println("Excepcion encontrada del tipo: "+e);
