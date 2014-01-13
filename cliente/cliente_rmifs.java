@@ -30,6 +30,7 @@ public class cliente_rmifs {
         Naming.lookup("rmi://localhost:21000/a_rmifs_interfazService");
       u = obtener_usuario_teclado();
       System.out.println(u.toString());
+      System.out.println(a_usuario.validar(u));
     }
     catch (MalformedURLException murle) {
       System.out.println();

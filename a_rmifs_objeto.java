@@ -2,17 +2,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Dictionary;
+import java.util.Hashtable;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 
 public class a_rmifs_objeto extends UnicastRemoteObject
   implements a_rmifs_interfaz {
 
-  private Dictionary usuarios;
+  private Dictionary<String,String> usuarios;
 
   public a_rmifs_objeto() throws RemoteException {
     super();
-    //this.usuarios = new Dictionary();
+    this.usuarios = new Hashtable<String,String>();
   }
 
   public boolean validar(validador_usuario usuario) 
