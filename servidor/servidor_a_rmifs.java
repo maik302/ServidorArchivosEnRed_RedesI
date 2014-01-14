@@ -12,8 +12,8 @@ public class servidor_a_rmifs {
       a_rmifs_interfaz a_usuario = new a_rmifs_objeto();
       //La siguiente linea comentada debe ser ejecutada en la Universidad,
       //por la lejania del servidor la operacion tarda considerablemente.
-      //Naming.rebind("rmi://irulan.ldc.usb.ve:21000/a_rmifs_interfazService", a_usuario);
-      Naming.rebind("rmi://localhost:21000/a_rmifs_interfazService", a_usuario);
+      //Naming.rebind("rmi://irulan.ldc.usb.ve:21000/a_rmifs_Service", a_usuario);
+      Naming.rebind("rmi://localhost:21000/a_rmifs_Service", a_usuario);
       a_usuario.suscribir_usuarios(new File("usuarios.txt"));
     }
     catch (Exception e) {

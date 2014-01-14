@@ -16,13 +16,13 @@ public class a_rmifs_objeto extends UnicastRemoteObject
     this.usuarios = new Hashtable<String,String>();
   }
 
-  public boolean validar(validador_usuario usuario) 
+  public boolean validar(String nombre, String clave) 
     throws RemoteException {
-    String clave;
+    String clave_verificador;
 
-    if(this.usuarios.get(usuario.getNombre()) != null) {
-      clave = (String) this.usuarios.get(usuario.getNombre());
-      if(clave.equals(usuario.getClave())) {
+    if(this.usuarios.get(nombre) != null) {
+      clave_verificador = (String) this.usuarios.get(nombre);
+      if(clave_verificador.equals(clave)) {
         return true;
       }
     }
