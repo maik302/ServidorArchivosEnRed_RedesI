@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -14,11 +16,11 @@ public class cliente_rmifs {
     try {
       i = 0;
       if(args[0].equals("-f")) {
-        obtener_usuario_archivo(new File(args[1]));
+        usuario = obtener_usuario_archivo(new File(args[1]));
       }
       else {
-        i++;
-        obtener_usuario_teclado();
+        i = 2;
+        usuario = obtener_usuario_teclado();
         if(args[i].equals("-m")) {
           servidor = args[i+1];
           if(args[i+2].equals("-p")) {
@@ -30,9 +32,9 @@ public class cliente_rmifs {
           //Java no evalua toda la expresion, con que el primero se haga false,
           //no sigue evaluando (evaluacion perezosa, quizas?)
           if(args.length > i+4 && args[i+4].equals("-c")) {
-            //Se ejecutan los comandos del archivo. FALTA METODO
+            interpretar_comandos_archivo(new File(args[i+5]));
           }
-          //Se piden los comando por pantalla. FALTA METODO
+          interpretar_comandos_teclado();
           
         }
         else {
@@ -48,6 +50,10 @@ public class cliente_rmifs {
       System.out.println("Error en la especificacion de llamada del programa.");
       System.exit(0);
     }
+    catch(FileNotFoundException e) {
+      System.out.println("Archivo no encontrado.");
+      System.exit(0);
+    }
 
   }
   
@@ -57,7 +63,7 @@ public class cliente_rmifs {
         //Esta opcion comentada debe ser probada en la Universidad, 
         //por la lejania del servidor tarda en responder.
         //Naming.lookup("rmi://irulan.ldc.usb.ve:21000/a_rmifs_Service");
-        Naming.lookup("rmi://localhost:21000/a_rmifs_Service");
+        Naming.lookup("rmi://"+servidor+":"+puerto+"/a_rmifs_Service");
       interpretar_argumentos(args);
       //PRUEBAS
 
