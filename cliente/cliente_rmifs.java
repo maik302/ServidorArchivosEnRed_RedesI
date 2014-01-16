@@ -8,6 +8,7 @@ import java.rmi.NotBoundException;
 public class cliente_rmifs {
   private static String servidor;
   private static String puerto = "20912";
+  private static String archivo_comandos = "";
   private static validador_usuario usuario;
 
   private static void interpretar_argumentos(String[] args) {
@@ -23,7 +24,6 @@ public class cliente_rmifs {
         usuario = funciones_cliente.obtener_usuario_teclado();
         if(args[i].equals("-m")) {
           servidor = args[i+1];
-          System.out.println(args[i+1]);
           if(args[i+2].equals("-p")) {
             puerto = args[i+3];
           }
@@ -33,10 +33,8 @@ public class cliente_rmifs {
           //Java no evalua toda la expresion, con que el primero se haga false,
           //no sigue evaluando (evaluacion perezosa, quizas?)
           if(args.length > i+4 && args[i+4].equals("-c")) {
-            funciones_cliente.interpretar_comandos_archivo(new File(args[i+5]));
+            archivo_comandos = args[5];
           }
-          //funciones_cliente.interpretar_comandos_teclado();
-          
         }
         else {
           throw new ArgumentosException();
@@ -63,9 +61,23 @@ public class cliente_rmifs {
       interpretar_argumentos(args);
       a_rmifs_interfaz a_usuario = (a_rmifs_interfaz)
         Naming.lookup("rmi://"+servidor+":"+puerto+"/a_rmifs_Service");
+      //Autenticacion del usuario
+      if(a_usuario.validar(usuario.getNombre(),usuario.getClave())) {
+        if(!archivo_comandos.equals("")) {
+          interpretar_comandos_archivo(new File(archivo_comandos));
+        }
+        interpretar_comandos_teclado();
+      }
+      else {
+        throw new AutenticacionException();
+      }
       //PRUEBAS
       System.out.println(a_usuario.validar("maria","123"));
 
+    }
+    catch(AutenticacionException e) {
+      System.out.println("La combinacion de usuario y clave no es válida.\n");
+      System.exit(0);
     }
     catch (MalformedURLException murle) {
       System.out.println();

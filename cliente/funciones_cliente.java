@@ -63,7 +63,7 @@ public class funciones_cliente {
 		String [] dupla;
 
 		sc = new Scanner(System.in);
-		System.out.println("Introduzca su comando:");
+		System.out.println("Introduzca su comando:\n");
 		while(sc.hasNext()) {
 		  comando = sc.next();
 		  dupla = comando.split(" ");
@@ -81,6 +81,17 @@ public class funciones_cliente {
 		  +"info : Muestra en pantalla esta ayuda.\n"
 		  +"sal : Termina la ejecucion del programa.\n");
 	}
+
+  public static void lls() {
+    File directorio_actual;
+    File[] archivos;
+
+    directorio_actual = new File(System.getProperty("user.dir"));
+    archivos = directorio_actual.listFiles();
+    for(int i=0; i<archivos.length; i++) {
+      System.out.println(archivos[i].getName());
+    } 
+  }
 
 	public static void ejecutar_comando(String[] instruccion) {
 		if(instruccion[0].equals("rls")) {
