@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class HistorialUsuarios {
 
   private ArrayList<Log> historial;
@@ -10,7 +12,7 @@ public class HistorialUsuarios {
   public void agregar_instruccion(String usuario, String instruccion) {
     Log caja = new Log();
 
-    caja.usuario = usuariol;
+    caja.usuario = usuario;
     caja.instruccion = instruccion;
     historial.add(caja);
   }

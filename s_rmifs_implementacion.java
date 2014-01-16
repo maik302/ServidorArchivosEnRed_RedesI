@@ -1,3 +1,16 @@
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.rmi.RemoteException;
+import java.util.Scanner;
+
 public class s_rmifs_implementacion extends UnicastRemoteObject
   implements s_rmifs_interfaz {
 
@@ -9,16 +22,25 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     throws RemoteException {
 
     super();
-    historial = new HistorialUsuarios;
-    a_usuario = (a_rmifs_interfaz)
-      Naming.lookup("rmi://"+direccion+":"+puerto+"a_rmifs_Service");
+    historial = new HistorialUsuarios();
+    try {
+      a_usuario = (a_rmifs_interfaz)
+        Naming.lookup("rmi://"+direccion+":"+puerto+"/a_rmifs_Service");
+    }
+    catch(Exception e) {
+      System.out.println("Excepcion encontrada del tipo: "+e);
+    }
   }
 
-  public boolean validar(String nombre, String clave) {
-    return a_usuario.validar(nombre,clave);
+  public boolean validar(String nombre, String clave) throws RemoteException {
+    if(a_usuario.validar(nombre,clave)) {
+      usuario = nombre;
+      return true;
+    }
+    return false;
   }
 
-  public void rls() {
+  public void rls() throws RemoteException {
     File directorio_actual;
     File[] archivos;
 
@@ -29,14 +51,59 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     }
   }
 
-  public boolean bor(String archivo) {
-    File archivo;
+  public boolean bor(String archivo) throws RemoteException {
+    File archivo_borrar;
 
-    archivo = new File(archivo);
-    return archivo.delete();
+    archivo_borrar = new File(archivo);
+    return archivo_borrar.delete();
   }
 
-  public void agregar_instruccion(String instruccion) {
+  public void sub(String nombre_archivo,
+    ByteArrayOutputStream bytes_archivo) throws RemoteException {
+    byte[] archivo;
+    File archivo_guardado;
+    FileOutputStream stream;
+    try {
+      archivo = bytes_archivo.toByteArray();
+      archivo_guardado = new File(nombre_archivo);
+      stream = new FileOutputStream(archivo_guardado);
+      stream.write(archivo);
+      stream.flush();
+      stream.close();
+    }
+    catch(FileNotFoundException e) {
+      System.out.println("El archivo a subir no fue encontrado.");
+    }
+    catch(IOException e) {
+      System.out.println("Error de E/S en el archivo a subir.");
+    }
+  }
+
+  public ByteArrayOutputStream baj(String nombre_archivo) throws RemoteException {
+    File archivo_descarga;
+    FileInputStream stream;
+    ByteArrayOutputStream b_array;
+    byte[] buffer;
+
+    try {
+      archivo_descarga = new File(nombre_archivo);
+      stream = new FileInputStream(archivo_descarga);
+      b_array = new ByteArrayOutputStream();
+      buffer = new byte[1024];
+      
+      for(int lectura; (lectura = stream.read(buffer)) != -1;) {
+        b_array.write(buffer, 0, lectura);
+      }
+      return b_array;
+    }
+    catch(IOException e) {
+      System.out.println("Error de E/S en el archivo a desacargar.");
+    }
+
+    return null;
+  }
+
+  public void agregar_instruccion(String instruccion) throws RemoteException {
     historial.agregar_instruccion(usuario, instruccion);
   }
 

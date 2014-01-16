@@ -1,3 +1,10 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
+import java.util.Scanner;
+
 public class s_rmifs {
   private static String puerto_archivos = "20912";
   private static String puerto_autenticacion = "20337";
@@ -47,7 +54,7 @@ public class s_rmifs {
     }
   }
 
-  public static void interpretar_argumentos(String[]) {
+  public static void interpretar_argumentos(String[] args) {
     try {
       if(args.length > 2) {
         if(args[0].equals("-l") && args[2].equals("-h") && args[4].equals("-r")) {
@@ -55,7 +62,7 @@ public class s_rmifs {
           direccion_autenticacion = args[3];
           puerto_autenticacion = args[5];
           //A partir de aqui se debe de implementar los metodos con hilos
-          new s_rmifs(direccion_autenticacion, puerto_autenticacion);
+          new s_rmifs();
         }
         else {
           throw new ArgumentosException();
@@ -69,5 +76,9 @@ public class s_rmifs {
       System.out.println("Error en la especificacion de llamada del programa.");
       System.exit(0);
     }
+  }
+
+  public static void main(String[] args) {
+    interpretar_argumentos(args);
   }
 }

@@ -49,50 +49,25 @@ public class cliente_rmifs {
       System.out.println("error en la especificacion de llamada del programa.");
       System.exit(0);
     }
-    //catch(FileNotFoundException e) {
-    //  System.out.println("Archivo no encontrado.");
-    //  System.exit(0);
-    //}
-
   }
   
   public static void main(String[] args) {
     try {
       interpretar_argumentos(args);
-      a_rmifs_interfaz a_usuario = (a_rmifs_interfaz)
-        Naming.lookup("rmi://"+servidor+":"+puerto+"/a_rmifs_Service");
-      //Autenticacion del usuario
-      if(a_usuario.validar(usuario.getNombre(),usuario.getClave())) {
-        if(!archivo_comandos.equals("")) {
-          interpretar_comandos_archivo(new File(archivo_comandos));
-        }
-        interpretar_comandos_teclado();
-      }
-      else {
+      funciones_cliente.establecer_conexion(servidor,puerto);
+      if(!funciones_cliente.validar(usuario)) {
         throw new AutenticacionException();
       }
+      if(!archivo_comandos.equals("")) {
+        funciones_cliente.interpretar_comandos_archivo(new File(archivo_comandos));
+      }
+      funciones_cliente.interpretar_comandos_teclado();
       //PRUEBAS
-      System.out.println(a_usuario.validar("maria","123"));
 
     }
     catch(AutenticacionException e) {
       System.out.println("La combinacion de usuario y clave no es válida.\n");
       System.exit(0);
-    }
-    catch (MalformedURLException murle) {
-      System.out.println();
-      System.out.println("MalformedURLException");
-      System.out.println(murle);
-    }
-    catch (RemoteException re) {
-      System.out.println();
-      System.out.println("RemoteException");
-      System.out.println(re);
-    }
-    catch (NotBoundException nbe) {
-      System.out.println();
-      System.out.println("NotBoundException");
-      System.out.println(nbe);
     }
   }
 
