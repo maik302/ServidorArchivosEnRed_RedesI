@@ -9,6 +9,10 @@ public class HistorialUsuarios {
     String instruccion;
   }
 
+  public HistorialUsuarios() {
+    historial = new ArrayList<Log>();
+  }
+
   public void agregar_instruccion(String usuario, String instruccion) {
     Log caja = new Log();
 

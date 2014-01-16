@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class funciones_cliente {
 
   private static s_rmifs_interfaz a_usuario;
+  private static String nombre_usuario;
 
   public static void establecer_conexion(String servidor, String puerto) {
     try {
@@ -27,15 +28,15 @@ public class funciones_cliente {
 
 	public static validador_usuario obtener_usuario_teclado() {
 		Scanner sc;
-		String nombre, clave;
+		String nombre_usuario, clave_usuario;
 
 		sc = new Scanner(System.in);
 		System.out.print("Nombre: ");
-		nombre = sc.next();
+		nombre_usuario = sc.next();
 		System.out.print("Clave: ");
-		clave = sc.next();
+		clave_usuario = sc.next();
 
-		return new validador_usuario(nombre,clave);
+		return new validador_usuario(nombre_usuario, clave_usuario);
 	}
 
 	public static validador_usuario obtener_usuario_archivo(File archivo) {
@@ -143,7 +144,7 @@ public class funciones_cliente {
       for(int lectura; (lectura = stream.read(buffer)) != -1;) {
         b_array.write(buffer, 0, lectura);
       }
-      a_usuario.sub(archivo, b_array);
+      a_usuario.sub(nombre_usuario, archivo, b_array);
 
     }
     catch(IOException e) {
@@ -176,19 +177,24 @@ public class funciones_cliente {
 	public static void ejecutar_comando(String[] instruccion) {
     try {
       if(instruccion[0].equals("rls")) {
+        a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
   		  a_usuario.rls();
   		}
   		if(instruccion[0].equals("lls")) {
-  		  lls();
+  		  a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+        lls();
   		}
   		if(instruccion[0].equals("sub")) {
-  		  sub(instruccion[1]);
+  		  a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+        sub(instruccion[1]);
   		}
   		if(instruccion[0].equals("baj")) {
-  		  baj(instruccion[1]);
+  		  a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+        baj(instruccion[1]);
   		}
   		if(instruccion[0].equals("bor")) {
-	  	  if(a_usuario.bor(instruccion[1])) {
+        a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+	  	  if(a_usuario.bor(nombre_usuario, instruccion[1])) {
           System.out.println("El archivo "+instruccion[1]+" ha sido borrado.");
         }
         else {
@@ -196,10 +202,12 @@ public class funciones_cliente {
         }
   		}
   		if(instruccion[0].equals("info")) {
-	  	  info();
+	  	  a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+        info();
 	  	}
 	  	if(instruccion[0].equals("sal")) {
-		    System.exit(0);
+		    a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+        System.exit(0);
 		  }
 	  }
     catch(RemoteException e) {

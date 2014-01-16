@@ -10,12 +10,14 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.util.Scanner;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class s_rmifs_implementacion extends UnicastRemoteObject
   implements s_rmifs_interfaz {
 
   private HistorialUsuarios historial;
-  private String usuario;
+  private Dictionary<String, String> propietarios;
   private a_rmifs_interfaz a_usuario;
 
   public s_rmifs_implementacion(String direccion, String puerto)
@@ -23,6 +25,7 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
 
     super();
     historial = new HistorialUsuarios();
+    propietarios = new Hashtable<String,String>();
     try {
       a_usuario = (a_rmifs_interfaz)
         Naming.lookup("rmi://"+direccion+":"+puerto+"/a_rmifs_Service");
@@ -33,11 +36,7 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
   }
 
   public boolean validar(String nombre, String clave) throws RemoteException {
-    if(a_usuario.validar(nombre,clave)) {
-      usuario = nombre;
-      return true;
-    }
-    return false;
+    return a_usuario.validar(nombre,clave);
   }
 
   public void rls() throws RemoteException {
@@ -51,19 +50,24 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     }
   }
 
-  public boolean bor(String archivo) throws RemoteException {
+  public boolean bor(String nombre_usuario, String archivo) throws RemoteException {
     File archivo_borrar;
-
-    archivo_borrar = new File(archivo);
-    return archivo_borrar.delete();
+    
+    if(propietarios.get(archivo) != null &&
+       propietarios.get(archivo).equals(nombre_usuario)) {
+      archivo_borrar = new File(archivo);
+      return archivo_borrar.delete();
+    }
+    return false;
   }
 
-  public void sub(String nombre_archivo,
+  public void sub(String nombre_usuario, String nombre_archivo,
     ByteArrayOutputStream bytes_archivo) throws RemoteException {
     byte[] archivo;
     File archivo_guardado;
     FileOutputStream stream;
     try {
+      propietarios.put(nombre_archivo, nombre_usuario); 
       archivo = bytes_archivo.toByteArray();
       archivo_guardado = new File(nombre_archivo);
       stream = new FileOutputStream(archivo_guardado);
@@ -103,7 +107,7 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     return null;
   }
 
-  public void agregar_instruccion(String instruccion) throws RemoteException {
+  public void agregar_instruccion(String usuario, String instruccion) throws RemoteException {
     historial.agregar_instruccion(usuario, instruccion);
   }
 
