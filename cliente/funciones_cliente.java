@@ -134,6 +134,7 @@ public class funciones_cliente {
     FileInputStream stream;
     ByteArrayOutputStream b_array;
     byte[] buffer;
+    byte[] buffer_subida;
 
     try {
       archivo_subida = new File(archivo);
@@ -144,7 +145,8 @@ public class funciones_cliente {
       for(int lectura; (lectura = stream.read(buffer)) != -1;) {
         b_array.write(buffer, 0, lectura);
       }
-      a_usuario.sub(nombre_usuario, archivo, b_array);
+      buffer_subida = b_array.toByteArray();
+      a_usuario.sub(nombre_usuario, archivo, buffer_subida);
 
     }
     catch(IOException e) {
@@ -153,16 +155,15 @@ public class funciones_cliente {
   }
 
   public static void baj(String nombre_archivo) {
-    byte[] archivo;
     File archivo_guardado;
     FileOutputStream stream;
     ByteArrayOutputStream b_array;
+    byte[] buffer_descarga;
     try {
-      b_array = a_usuario.baj(nombre_archivo);
-      archivo = b_array.toByteArray();
+      buffer_descarga = a_usuario.baj(nombre_archivo);
       archivo_guardado = new File(nombre_archivo);
       stream = new FileOutputStream(archivo_guardado);
-      stream.write(archivo);
+      stream.write(buffer_descarga);
       stream.flush();
       stream.close();   
     }

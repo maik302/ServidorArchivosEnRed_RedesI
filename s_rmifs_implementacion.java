@@ -24,8 +24,8 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     throws RemoteException {
 
     super();
-    historial = new HistorialUsuarios();
-    propietarios = new Hashtable<String,String>();
+    this.historial = new HistorialUsuarios();
+    this.propietarios = new Hashtable<String,String>();
     try {
       a_usuario = (a_rmifs_interfaz)
         Naming.lookup("rmi://"+direccion+":"+puerto+"/a_rmifs_Service");
@@ -53,8 +53,8 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
   public boolean bor(String nombre_usuario, String archivo) throws RemoteException {
     File archivo_borrar;
     
-    if(propietarios.get(archivo) != null &&
-       propietarios.get(archivo).equals(nombre_usuario)) {
+    if(this.propietarios.get(archivo) != null &&
+       this.propietarios.get(archivo).equals(nombre_usuario)) {
       archivo_borrar = new File(archivo);
       return archivo_borrar.delete();
     }
@@ -62,16 +62,14 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
   }
 
   public void sub(String nombre_usuario, String nombre_archivo,
-    ByteArrayOutputStream bytes_archivo) throws RemoteException {
-    byte[] archivo;
+    byte[] bytes_archivo) throws RemoteException {
     File archivo_guardado;
     FileOutputStream stream;
     try {
-      propietarios.put(nombre_archivo, nombre_usuario); 
-      archivo = bytes_archivo.toByteArray();
+      //this.propietarios.put(nombre_archivo, nombre_usuario); 
       archivo_guardado = new File(nombre_archivo);
       stream = new FileOutputStream(archivo_guardado);
-      stream.write(archivo);
+      stream.write(bytes_archivo);
       stream.flush();
       stream.close();
     }
@@ -83,14 +81,15 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     }
   }
 
-  public ByteArrayOutputStream baj(String nombre_archivo) throws RemoteException {
+  public byte[] baj(String archivo) throws RemoteException {
     File archivo_descarga;
     FileInputStream stream;
     ByteArrayOutputStream b_array;
     byte[] buffer;
+    byte[] buffer_descarga;
 
     try {
-      archivo_descarga = new File(nombre_archivo);
+      archivo_descarga = new File(archivo);
       stream = new FileInputStream(archivo_descarga);
       b_array = new ByteArrayOutputStream();
       buffer = new byte[1024];
@@ -98,7 +97,8 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
       for(int lectura; (lectura = stream.read(buffer)) != -1;) {
         b_array.write(buffer, 0, lectura);
       }
-      return b_array;
+      buffer_descarga = b_array.toByteArray();
+      return buffer_descarga;
     }
     catch(IOException e) {
       System.out.println("Error de E/S en el archivo a desacargar.");
