@@ -35,7 +35,7 @@ public class cliente_rmifs {
           if(args.length > i+4 && args[i+4].equals("-c")) {
             funciones_cliente.interpretar_comandos_archivo(new File(args[i+5]));
           }
-          funciones_cliente.interpretar_comandos_teclado();
+          //funciones_cliente.interpretar_comandos_teclado();
           
         }
         else {
@@ -62,12 +62,9 @@ public class cliente_rmifs {
     try {
       interpretar_argumentos(args);
       a_rmifs_interfaz a_usuario = (a_rmifs_interfaz)
-        //Esta opcion comentada debe ser probada en la Universidad, 
-        //por la lejania del servidor tarda en responder.
-        //Naming.lookup("rmi://irulan.ldc.usb.ve:21000/a_rmifs_Service");
         Naming.lookup("rmi://"+servidor+":"+puerto+"/a_rmifs_Service");
       //PRUEBAS
-      a_usuario.validar("maria","123");
+      System.out.println(a_usuario.validar("maria","123"));
 
     }
     catch (MalformedURLException murle) {
