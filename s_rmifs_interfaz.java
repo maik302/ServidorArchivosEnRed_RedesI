@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 
 public interface s_rmifs_interfaz extends Remote {
   public boolean validar(String nombre, String clave) throws RemoteException;
-  public void rls() throws RemoteException;
+  public String rls() throws RemoteException;
   public boolean bor(String nombre_usuario, String archivo) throws RemoteException;
   public void sub(String nombre_usuario, String nombre_archivo, byte[] bytes_archivo)
     throws RemoteException;

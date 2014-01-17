@@ -24,8 +24,8 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     throws RemoteException {
 
     super();
-    this.historial = new HistorialUsuarios();
-    this.propietarios = new Hashtable<String,String>();
+    propietarios = new Hashtable<String,String>();
+    historial = new HistorialUsuarios();
     try {
       a_usuario = (a_rmifs_interfaz)
         Naming.lookup("rmi://"+direccion+":"+puerto+"/a_rmifs_Service");
@@ -39,22 +39,26 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     return a_usuario.validar(nombre,clave);
   }
 
-  public void rls() throws RemoteException {
+  public String rls() throws RemoteException {
     File directorio_actual;
     File[] archivos;
+    String mensaje;
 
+    mensaje = "";
     directorio_actual = new File(System.getProperty("user.dir"));
     archivos = directorio_actual.listFiles();
     for(int i=0; i<archivos.length; i++) {
-      System.out.println(archivos[i].getName());
+      mensaje = mensaje+archivos[i].getName()+"\n";
     }
+
+    return mensaje;
   }
 
   public boolean bor(String nombre_usuario, String archivo) throws RemoteException {
     File archivo_borrar;
     
-    if(this.propietarios.get(archivo) != null &&
-       this.propietarios.get(archivo).equals(nombre_usuario)) {
+    if(propietarios.get(archivo) != null &&
+       propietarios.get(archivo).equals(nombre_usuario)) {
       archivo_borrar = new File(archivo);
       return archivo_borrar.delete();
     }
@@ -66,7 +70,16 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     File archivo_guardado;
     FileOutputStream stream;
     try {
-      //this.propietarios.put(nombre_archivo, nombre_usuario); 
+      propietarios.put(nombre_archivo, nombre_usuario);
+     
+     
+     
+     
+      //System.out.print
+     
+     
+     
+     
       archivo_guardado = new File(nombre_archivo);
       stream = new FileOutputStream(archivo_guardado);
       stream.write(bytes_archivo);

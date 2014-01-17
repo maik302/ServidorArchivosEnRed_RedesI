@@ -83,7 +83,7 @@ public class funciones_cliente {
 		  sc = new Scanner(archivo);
 		  while(sc.hasNextLine()) {
 		    linea = sc.nextLine();
-		    dupla = linea.split(" ");
+		    dupla = linea.split("\\s+");
 		    ejecutar_comando(dupla);
 		  }
 		}
@@ -179,7 +179,7 @@ public class funciones_cliente {
     try {
       if(instruccion[0].equals("rls")) {
         a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
-  		  a_usuario.rls();
+  		  System.out.println(a_usuario.rls());
   		}
   		if(instruccion[0].equals("lls")) {
   		  a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
