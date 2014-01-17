@@ -1,6 +1,7 @@
 /*
  * s_rmifs_interfaz
  *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -13,6 +14,10 @@ import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+/*
+ * Interfaz que define el comportamiento del objeto que sirve de comunicacion
+ * entre el servidor de archivos central y el programa cliente.
+ */
 public interface s_rmifs_interfaz extends Remote {
 
  /*
@@ -76,5 +81,13 @@ public interface s_rmifs_interfaz extends Remote {
   */
   public void agregar_instruccion(String usuario, String instruccion) throws RemoteException;
 
+/*
+  * Imprime por pantalla del servidor de archivos el historial de comandos
+  * utilizados, con su respectivo usuario.
+  *
+  * @param num_instrucciones: numero de instrucciones a imprimir por pantalla.
+  *
+  * @hrows RemoteException
+  */
   public void imprimir_historial(int num_instrucciones) throws RemoteException;
 }

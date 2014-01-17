@@ -1,6 +1,7 @@
 /*
  * a_rmifs_implementacion
  *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -18,6 +19,11 @@ import java.rmi.RemoteException;
 public class a_rmifs_implementacion extends UnicastRemoteObject
   implements a_rmifs_interfaz {
 
+  /* 
+   * Diccionario de usuarios disponibles en sistema.
+   * Las entradas de la forma (clave,valor) se encuentran especificadas como:
+   * (nombre del usuario, clave del usuario).
+   */
   private Dictionary<String,String> usuarios;
 
  /* 

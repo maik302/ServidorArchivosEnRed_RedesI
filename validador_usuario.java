@@ -1,6 +1,7 @@
 /*
  * validador_usuario
  *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -9,6 +10,9 @@
 
 import java.rmi.RemoteException;
 
+/*
+ * Clase que describe a un usuario, contiene su respectivo nombre y contrasena.
+ */
 public class validador_usuario {
   private String nombre;
   private String clave;

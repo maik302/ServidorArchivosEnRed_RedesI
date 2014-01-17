@@ -1,6 +1,7 @@
 /*
  * HistorialUsuarios
  *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -9,6 +10,10 @@
 
 import java.util.ArrayList;
 
+/*
+ * Clase que registra el historial de comandos de los usuarios que interactuan
+ * con el servidor de archivos.
+ */
 public class HistorialUsuarios {
 
   private ArrayList<Log> historial;

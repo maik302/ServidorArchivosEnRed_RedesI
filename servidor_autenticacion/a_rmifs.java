@@ -2,8 +2,7 @@
  * a_rmifs
  * servidor_autentificador
  *
- *
- *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -15,6 +14,10 @@ import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 
+/*
+ * Clase que implementa las funciones del servidor de autenticacion de
+ * usuarios.
+ */
 public class a_rmifs {
   private static String puerto = "20912";
   private static a_rmifs_interfaz a_usuario;
@@ -25,8 +28,6 @@ public class a_rmifs {
   * llamada a_usuario que usaremos para que el usuario
   * pueda ejecutar ciertos metodos, y luego registra 
   * con el nombre a_rmifs_Service al objeto a_usuario
-  *
-  * @throws Exception e: cuando no puede 
   *
   */
   public a_rmifs() {

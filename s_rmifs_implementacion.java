@@ -1,6 +1,7 @@
 /*
  * s_rmifs_implementacion
  *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -22,6 +23,10 @@ import java.util.Scanner;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+/*
+ * Implementacion del objeto remote que sirve de comunicacion entre el cliente
+ * y el servidor de archivos.
+ */
 public class s_rmifs_implementacion extends UnicastRemoteObject
   implements s_rmifs_interfaz {
 
@@ -30,12 +35,15 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
   private a_rmifs_interfaz a_usuario;
 
  /* 
-  * FALTAAAAAA!!
+  * Crea una instancia del objeto de comunicacion cliente-servidor archivos.
   *
-  * @param direccion: 
-  * @param puerto: 
+  * @param direccion: Nombre DNS o direccion IP del computador que aloja al
+  *                   servidor de autenticacion.
+  * @param puerto: Puerto habilitado por el servidor de autenticacion para
+  *                ofrecer su servicio.
   *
-  * @throws Exception e: 
+  * @throws Exception e: Error de comunicacion entre el servidor de archivos
+  *                      y el servidor de autenticacion.
   */
   public s_rmifs_implementacion(String direccion, String puerto)
     throws RemoteException {
@@ -43,16 +51,6 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     super();
     this.propietarios = new Hashtable<String,String>();
     this.historial = new HistorialUsuarios();
-
-
-
-
-    this.propietarios.put("Yasury","Yamilet");
-
-
-
-
-
     try {
       a_usuario = (a_rmifs_interfaz)
         Naming.lookup("rmi://"+direccion+":"+puerto+"/a_rmifs_Service");
@@ -191,6 +189,14 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     this.historial.agregar_instruccion(usuario, instruccion);
   }
 
+ /*
+  * Imprime por pantalla del servidor de archivos el historial de comandos
+  * utilizados, con su respectivo usuario.
+  *
+  * @param num_instrucciones: numero de instrucciones a imprimir por pantalla.
+  *
+  * @hrows RemoteException
+  */
   public void imprimir_historial(int num_instrucciones) throws RemoteException {
     this.historial.imprimir_historial(num_instrucciones);
   }

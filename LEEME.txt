@@ -1,6 +1,7 @@
 /*
  * LEEME
  *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -16,9 +17,23 @@ Este leeme consta de:
 	6.- LIMITACIONES
 	7.- COMPONENTES
 
-1.- DEFINICIÓN: ¿Qué hace el programa?
+1.- DEFINICIÓN Y FUNCIONAMIENTO: ¿Qué hace el programa? Breve descripción del funcionamiento
+  
+  Implementacion de un sistema cliente-servidor de acceso a archivos remotos a
+  través de un servidor centralizado. Los usuarios clientes tendrán la posibilidad
+  de subir, descargar y borrar archivos en el servidor de archivos centralizado.
+  Para tener acceso a las funcionalidades del sistema los usuarios deberan ser
+  verificados por un sistema de autentificacion en comunicación con el servidor
+  de archivos centralizado.
 
 2.- COMPILACIÓN: ¿Cómo se compila?
+
+  Para la compilación se debe ejecutar con './' el archivo compilacion_g50.bash
+  que reune la serie de comandos que:
+
+  - Compila el código del sistema.
+  - Distribuye las clases necesarias en cada carpeta referida a cada ente del
+    sistema: Cliente, Servidor de Autenticación, Servidor Central de Archivos.
 
 3.- CORRIDA: ¿Cómo se ejecuta?
 
@@ -39,29 +54,46 @@ Este leeme consta de:
 
 4.- REQUERIMIENTOS: ¿Qué requiere para ejecutarse?
 
-5.- FUNCIONAMIENTO: Breve descripción del funcionamiento
+  - java 1.6.*
+  - Ubicar cada carpeta en el computador correspondiente: cliente, servidor de
+    autenticación, servidor central de archivos.
 
-6.- LIMITACIONES: ¿Qué limitaciones tiene?
+5.- LIMITACIONES: ¿Qué limitaciones tiene?
+	No tiene limitaciones.
 
-7.- COMPONENTES: Explicación de cada uno de los componentes:
+6.- COMPONENTES: Explicación de cada uno de los componentes:
 	El programa se divide en 4 directorios con archivos compilables, los cuales se describiran a continuación:
 	
 		CARPETA PRINCIPAL:
-			a_rmifs_implementacion
-			a_rmifs_interfaz
-			ArgumentosException
-			AutenticacionException
-			HistorialUsuarios
+			a_rmifs_implementacion:
+				Contiene el metodo para suscribir usuarios en el sistema, agregandolos a una Hashtable llamada usuarios, ademas tambien tiene el metodo para la validacion que arroja un boolean.
+			a_rmifs_interfaz:
+				Interfaz de a_rmifs
+			ArgumentosException:
+				Para la clase ArgumentosException
+			AutenticacionException:
+				Para la clase AutenticacionException
+			HistorialUsuarios:
+				Genera una lista de un objeto log que tiene el usuario y la instruccion que hayan realizado.
 			s_rmifs_implementacion
-			s_rmifs_interfaz
-			validador_usuario
+				Realiza el resto de trabajo que no hizo cliente_rmifs en los comandos: sub, baj, bor y rls, debido a que necesita al servidor para hacerlos, ademas usa el metodo agregar_instruccion que agrega la instruccion realizada al historial de instrucciones
+			s_rmifs_interfaz:
+				Es la interfaz de s_rmifs
+			validador_usuario:
+				Tiene los metodos que permited obtener el nombre y clave de un usuario, ademas puede devolver ambos en un string y tiene el metodo validar el cual compara un nombre y clave con el nombre y clave del usuario que lo solicite.
 
 		CLIENTE:
-			cliente_rmifs
-			funciones_cliente
-			validador_usuario
+			cliente_rmifs:
+				Contiene el main del cliente y recibe los argumentos de la llamada y usa los metodos de funciones_cliente para validar el usuario y establecer la conexion, luego usa esos metodos para la lectura de comandos
+			funciones_cliente:
+				Tiene los metodos necesarios para la validacion del usuario donde usa los metodos de validador_usuario, establecer la conexion, definir que comando se debe ejecutar y empieza la ejecucion de aquellos que necesiten respuesta del servidor, los comandos de info y lls corren solamente en este archivo pues no necesitan conectarse con el servidor.
+			validador_usuario:
+				Contiene los metodos que hacen posible la validacion de usuario
+
 		SERVIDOR_AUTENTICACION:
-			s_rmifs
-		SERVIDOR_ARCHIVOS:
-			a_rmifs
+			a_rmifs:
+				Contiene el main del servidor para la autentificacion de usuarios, lee los parametros y el archivo del servidor para llamar al metodo de suscribir usuarios de a_rmifs_implementacion, tambien crea una nueva instancia de a_rmifs_implementacion llamada a_usuario que usaremos para que el usuario pueda ejecutar ciertos metodos, y luego registra con el nombre a_rmifs_Service al objeto a_usuario
 	
+		SERVIDOR_ARCHIVOS:
+			s_rmifs:
+				Continene el main del servidor para la gestion de archivos, interpreta los argumentos y guarda el puerto de archivos suministrado la direccion para la autenticacion y el puerto para la autenticacion, lista y ejecuta los comandos del servidor

@@ -1,6 +1,7 @@
 /*
  * a_rmifs_interfaz
  *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -11,6 +12,10 @@ import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+/*
+ * Interfaz que define el comportamiento del objeto remoto que servira
+ * de comunicacion entre el servidor de archivos y el servidor de autenticaciom.
+ */
 public interface a_rmifs_interfaz extends Remote {
 
  /* 

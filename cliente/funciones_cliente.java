@@ -2,8 +2,7 @@
  * funciones_cliente
  * cliente
  *
- *
- *
+ * @ Grupo 50
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -23,6 +22,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
+/*
+ * Funciones necesarias para la ejecucion del programa cliente.
+ */
 public class funciones_cliente {
 
   private static s_rmifs_interfaz a_usuario;
@@ -82,6 +84,7 @@ public class funciones_cliente {
       while(sc.hasNextLine()) {
 	      linea = sc.nextLine();
 	      dupla = linea.split(":");
+        nombre_usuario = dupla[0];
 	      return new validador_usuario(dupla[0],dupla[1]);
       }
       sc.close();
@@ -265,36 +268,42 @@ public class funciones_cliente {
     try {
       if(instruccion[0].equals("rls")) {
         a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
-  	System.out.println(a_usuario.rls());
+  	    System.out.println(a_usuario.rls());
       }
       if(instruccion[0].equals("lls")) {
-	a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+	      a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
         lls();
       }
       if(instruccion[0].equals("sub")) {
-	a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+	      a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
         sub(instruccion[1]);
       }
       if(instruccion[0].equals("baj")) {
-	a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+	      a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
         baj(instruccion[1]);
       }
       if(instruccion[0].equals("bor")) {
         a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
-	if(a_usuario.bor(nombre_usuario, instruccion[1])) {
+	      if(a_usuario.bor(nombre_usuario, instruccion[1])) {
           System.out.println("El archivo "+instruccion[1]+" ha sido borrado.");
         }else{
           System.out.println("EL archivo "+instruccion[1]+" no pudo ser borrado.");
         }
       }
       if(instruccion[0].equals("info")) {
-	a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+	      a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
         info();
       }
       if(instruccion[0].equals("sal")) {
-	a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
+	      a_usuario.agregar_instruccion(nombre_usuario,instruccion[0]);
         System.exit(0);
       }
+      else {
+        throw new ArgumentosException();
+      }
+    }
+    catch(ArgumentosException e) {
+      System.out.println("Comando invalido, por favor introduzca un comando valido.");
     }
     catch(RemoteException e) {
       System.out.println("Ha ocurrido un error en la comunicacion con el servidor.");

@@ -2,8 +2,7 @@
  * s_rmifs
  * servidor_archivos
  *
- *
- *
+ * @ Grupo 50 
  * @ Autores:
  * Michael Woo 09-10912
  * Luis Esparragoza 08-10337
@@ -17,6 +16,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
+/*
+ * Clase que implementa las funciones a ejecutar en el servidor de archivos
+ * centralizado.
+ */
 public class s_rmifs {
   private static String puerto_archivos = "20912";
   private static String puerto_autenticacion = "20337";
@@ -30,9 +33,7 @@ public class s_rmifs {
   * pueda ejecutar ciertos metodos, y luego registra 
   * con el nombre s_rmifs_Service al objeto a_usuario 
   * que se encuentra en el host direccion_autenticacion
-  * y puerto puerto_archivo
-  *
-  * @throws Exception e 
+  * y puerto puerto_archivo.
   *
   */
   public s_rmifs() {
@@ -60,6 +61,10 @@ public class s_rmifs {
     }
   }
 
+ /*
+  * Imprime por la pantalla del servidor de archivos el historial de comandos
+  * ejecuatados indicando el tipo de comando y el usuario respectivo.
+  */
   public static void log() {
     try {
       a_usuario.imprimir_historial(20);
