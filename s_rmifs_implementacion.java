@@ -1,3 +1,12 @@
+/*
+ * s_rmifs_implementacion
+ *
+ * @ Autores:
+ * Michael Woo 09-10912
+ * Luis Esparragoza 08-10337
+ *
+ */
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,12 +29,30 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
   private Dictionary<String, String> propietarios;
   private a_rmifs_interfaz a_usuario;
 
+ /* 
+  * FALTAAAAAA!!
+  *
+  * @param direccion: 
+  * @param puerto: 
+  *
+  * @throws Exception e: 
+  */
   public s_rmifs_implementacion(String direccion, String puerto)
     throws RemoteException {
 
     super();
-    propietarios = new Hashtable<String,String>();
-    historial = new HistorialUsuarios();
+    this.propietarios = new Hashtable<String,String>();
+    this.historial = new HistorialUsuarios();
+
+
+
+
+    this.propietarios.put("Yasury","Yamilet");
+
+
+
+
+
     try {
       a_usuario = (a_rmifs_interfaz)
         Naming.lookup("rmi://"+direccion+":"+puerto+"/a_rmifs_Service");
@@ -35,10 +62,25 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     }
   }
 
+ /*
+  * Devuelve un boolean que dice si se valido o no el usuario suministrado
+  *
+  * @param nombre: el nombre suministrado
+  * @param clave: la clave suministrada
+  * @throws RemoteException 
+  * @return false si no se encuentra y true de lo contrario 
+  *
+  */
   public boolean validar(String nombre, String clave) throws RemoteException {
     return a_usuario.validar(nombre,clave);
   }
 
+ /*
+  * Muestra los archivos disponibles en la carpeta del servidor
+  *
+  * @throws RemoteException 
+  * @return mensaje: string que contiene la lista de archivos del servidor 
+  */
   public String rls() throws RemoteException {
     File directorio_actual;
     File[] archivos;
@@ -54,32 +96,40 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     return mensaje;
   }
 
+ /* 
+  * Eliminar un archivo en la carpeta del servidor
+  *
+  * @param nombre_usuario: el usuario que escribe el comando
+  * @param archivo: el nombre del archivo que desea eliminar
+  * @throws RemoteException
+  */
   public boolean bor(String nombre_usuario, String archivo) throws RemoteException {
     File archivo_borrar;
     
-    if(propietarios.get(archivo) != null &&
-       propietarios.get(archivo).equals(nombre_usuario)) {
+    if(this.propietarios.get(archivo) != null &&
+       this.propietarios.get(archivo).equals(nombre_usuario)) {
       archivo_borrar = new File(archivo);
       return archivo_borrar.delete();
     }
     return false;
   }
 
+  /*
+  * Subir archivo al servidor el cual se genera mediante un arreglo de bytes que se  
+  * le suministra en los parametros por parte del cliente
+  *
+  * @param nombre_usuario: nombre del ususario que sube el archivo
+  * @param nombre_archivo: nombre del archivo que se desea subir 
+  * @param bytes_archivo: arreglo que contiene el archivo en bytes
+  * @throws RemoteException
+  *
+  */
   public void sub(String nombre_usuario, String nombre_archivo,
     byte[] bytes_archivo) throws RemoteException {
     File archivo_guardado;
     FileOutputStream stream;
     try {
-      propietarios.put(nombre_archivo, nombre_usuario);
-     
-     
-     
-     
-      //System.out.print
-     
-     
-     
-     
+      this.propietarios.put(nombre_archivo, nombre_usuario);
       archivo_guardado = new File(nombre_archivo);
       stream = new FileOutputStream(archivo_guardado);
       stream.write(bytes_archivo);
@@ -94,6 +144,15 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
     }
   }
 
+  /*
+  * Bajar archivo del servidor por parte del cliente, el cual recibe
+  * un arreglo de bytes y genera el archivo nuevamente con el nombre 
+  * del archivo suministrado por el cliente
+  *
+  * @param archivo: nombre del archivo que se desea descargar 
+  * @throws RemoteException
+  *
+  */
   public byte[] baj(String archivo) throws RemoteException {
     File archivo_descarga;
     FileInputStream stream;
@@ -114,14 +173,26 @@ public class s_rmifs_implementacion extends UnicastRemoteObject
       return buffer_descarga;
     }
     catch(IOException e) {
-      System.out.println("Error de E/S en el archivo a desacargar.");
+      System.out.println("Error de E/S en el archivo a descargar.");
     }
 
     return null;
   }
 
+ /* 
+  * Agrega una instruccion nueva al historial de comandos
+  *
+  * @param usuario: el usuario que escribe el comando
+  * @param instruccion: la instruccion suministrada por el usuario
+  *
+  * @throws RemoteException
+  */
   public void agregar_instruccion(String usuario, String instruccion) throws RemoteException {
-    historial.agregar_instruccion(usuario, instruccion);
+    this.historial.agregar_instruccion(usuario, instruccion);
+  }
+
+  public void imprimir_historial(int num_instrucciones) throws RemoteException {
+    this.historial.imprimir_historial(num_instrucciones);
   }
 
 }

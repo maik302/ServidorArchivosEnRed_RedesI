@@ -1,0 +1,67 @@
+/*
+ * LEEME
+ *
+ * @ Autores:
+ * Michael Woo 09-10912
+ * Luis Esparragoza 08-10337
+ *
+ */
+
+Este leeme consta de:
+	1.- DEFINICION
+	2.- COMPILACIÓN
+	3.- CORRIDA
+	4.- REQUERIMIENTOS
+	5.- FUNCIONAMIENTO
+	6.- LIMITACIONES
+	7.- COMPONENTES
+
+1.- DEFINICIÓN: ¿Qué hace el programa?
+
+2.- COMPILACIÓN: ¿Cómo se compila?
+
+3.- CORRIDA: ¿Cómo se ejecuta?
+
+	Se deben ejecutar 3 instrucciones desde distintos terminales:
+	
+	Para el servidor de autenticación:
+	
+		java a_rmifs -f usuarios -p puerto
+
+	Para el servidor de archivos:
+
+		java s_rmifs -l puertolocal -h host -r puerto
+
+	Para el cliente:
+
+		java cliente_rmifs [-f usuarios] -m servidor -p puerto [-c comandos]
+
+
+4.- REQUERIMIENTOS: ¿Qué requiere para ejecutarse?
+
+5.- FUNCIONAMIENTO: Breve descripción del funcionamiento
+
+6.- LIMITACIONES: ¿Qué limitaciones tiene?
+
+7.- COMPONENTES: Explicación de cada uno de los componentes:
+	El programa se divide en 4 directorios con archivos compilables, los cuales se describiran a continuación:
+	
+		CARPETA PRINCIPAL:
+			a_rmifs_implementacion
+			a_rmifs_interfaz
+			ArgumentosException
+			AutenticacionException
+			HistorialUsuarios
+			s_rmifs_implementacion
+			s_rmifs_interfaz
+			validador_usuario
+
+		CLIENTE:
+			cliente_rmifs
+			funciones_cliente
+			validador_usuario
+		SERVIDOR_AUTENTICACION:
+			s_rmifs
+		SERVIDOR_ARCHIVOS:
+			a_rmifs
+	
